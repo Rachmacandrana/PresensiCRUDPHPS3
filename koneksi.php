@@ -23,7 +23,7 @@ $s3 = new S3Client([
     'region'  => 'us-east-1'
 ]);
 
-$bucket = "bucketku-uploads";
+$bucketName = "bucketku-uploads";
 $s3_folder = "uploads/";
 
 /* debug error */
