@@ -1,37 +1,33 @@
 <?php
-// ============================================
-// koneksi.php - Konfigurasi Database (RDS) & Storage (S3)
-// ============================================
-
-// 1. Load AWS SDK (Pastikan folder 'vendor' ada di direktori project Anda)
 require 'vendor/autoload.php';
+
 use Aws\S3\S3Client;
 
-// 2. Konfigurasi Database RDS
-define('DB_HOST', 'localhost'); // Ganti dengan Endpoint RDS Anda
-define('DB_USER', '');
-define('DB_PASS', ''); 
-define('DB_NAME', 'db_absensi');
+/* koneksi database */
 
-$conn = new mysqli(DB_HOST, DB_USER, DB_PASS, DB_NAME);
+$host = 'database-1.cbmfocjqrekw.us-east-1.rds.amazonaws.com';
+$user = 'admin';
+$pass = '';
+$db   = 'db_absensi';
+
+$conn = new mysqli($host, $user, $pass, $db);
 
 if ($conn->connect_error) {
-    die("Koneksi RDS Gagal: " . $conn->connect_error);
+    die("Koneksi gagal: " . $conn->connect_error);
 }
 
-// 3. Konfigurasi AWS S3
-$bucketName = 'nama-bucket-anda'; // Ganti dengan nama bucket S3 Anda
-$region     = 'us-east-1';        // Ganti sesuai region bucket Anda
+/* konfigurasi S3 */
 
 $s3 = new S3Client([
     'version' => 'latest',
-    'region'  => $region,
-    'credentials' => [
-        'key'    => 'AKIAXXXXXXXXXXXXXXXX', // Ganti dengan Access Key IAM
-        'secret' => 'XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX', // Ganti dengan Secret Key IAM
-    ],
+    'region'  => 'us-east-1'
 ]);
 
-// Set charset
-$conn->set_charset('utf8mb4');
+$bucket = "bucketku-uploads";
+$s3_folder = "uploads/";
+
+/* debug error */
+
+ini_set('display_errors', 1);
+error_reporting(E_ALL);
 ?>
